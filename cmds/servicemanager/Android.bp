@@ -6,11 +6,6 @@ cc_defaults {
         "-Wextra",
         "-Werror",
     ],
-    product_variables: {
-        binder32bit: {
-            cflags: ["-DBINDER_IPC_32BIT=1"],
-        },
-    },
 
     shared_libs: ["liblog"],
 }
