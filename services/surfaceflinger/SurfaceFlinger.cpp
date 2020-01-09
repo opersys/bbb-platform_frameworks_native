@@ -4394,7 +4394,7 @@ void SurfaceFlinger::onInitializeDisplays() {
     displays.add(d);
     setTransactionState(state, displays, 0, nullptr, mPendingInputWindowCommands, -1, {}, {});
 
-    setPowerModeInternal(display, HWC_POWER_MODE_NORMAL);
+    setPowerModeInternal(display, HWC_POWER_MODE_OFF);
 
     const nsecs_t vsyncPeriod = getVsyncPeriod();
     mAnimFrameTracker.setDisplayRefreshPeriod(vsyncPeriod);
@@ -4414,6 +4414,11 @@ void SurfaceFlinger::initializeDisplays() {
 void SurfaceFlinger::setPowerModeInternal(const sp<DisplayDevice>& display, int mode) {
     if (display->isVirtual()) {
         ALOGE("%s: Invalid operation on virtual display", __FUNCTION__);
+        return;
+    }
+
+    if (mode != HWC_POWER_MODE_OFF) {
+        ALOGE("Refusing to turn ON the display.");
         return;
     }
 
