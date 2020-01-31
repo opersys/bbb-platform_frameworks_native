@@ -316,6 +316,7 @@ void EventThread::threadMain(std::unique_lock<std::mutex>& lock) {
                 case DisplayEventReceiver::DISPLAY_EVENT_HOTPLUG:
                     if (event->hotplug.connected && !mVSyncState) {
                         mVSyncState.emplace(event->header.displayId);
+                        mVSyncState->synthetic = true;
                     } else if (!event->hotplug.connected && mVSyncState &&
                                mVSyncState->displayId == event->header.displayId) {
                         mVSyncState.reset();
