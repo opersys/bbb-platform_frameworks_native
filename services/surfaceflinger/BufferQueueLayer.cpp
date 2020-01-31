@@ -104,10 +104,6 @@ bool BufferQueueLayer::shouldPresentNow(nsecs_t expectedPresentTime) const {
 
     // Ignore timestamps more than a second in the future
     const bool isPlausible = addedTime < (expectedPresentTime + s2ns(1));
-    ALOGW_IF(!isPlausible,
-             "[%s] Timestamp %" PRId64 " seems implausible "
-             "relative to expectedPresent %" PRId64,
-             mName.string(), addedTime, expectedPresentTime);
 
     const bool isDue = addedTime < expectedPresentTime;
     return isDue || !isPlausible;
