@@ -4417,17 +4417,21 @@ void SurfaceFlinger::setPowerModeInternal(const sp<DisplayDevice>& display, int 
         return;
     }
 
-    if (mode != HWC_POWER_MODE_OFF) {
-        ALOGE("Refusing to turn ON the display.");
+    int currentMode = display->getPowerMode();
+
+    // Never turn on the display, or change the display mode from
+    // HWC_POWER_MODE_OFF to anything else.
+    if (currentMode == HWC_POWER_MODE_OFF || mode != HWC_POWER_MODE_OFF) {
+        ALOGI("Display mode is %d, not going to switch it to mode %d", currentMode, mode);
         return;
-    }
+    } else
+        ALOGI("Display mode is %d, granting switch to mode %d", currentMode, mode);
 
     const auto displayId = display->getId();
     LOG_ALWAYS_FATAL_IF(!displayId);
 
     ALOGD("Setting power mode %d on display %s", mode, to_string(*displayId).c_str());
 
-    int currentMode = display->getPowerMode();
     if (mode == currentMode) {
         return;
     }
